@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wils — Design Gráfico, Motion &amp; Sites</title>
+  <meta name="description" content="Wils: designer gráfico, motion designer, editor de vídeo e criador de sites. Vamos criar algo que se move." />
+
+  <!-- Fonte Archivo (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,200;0,300;0,400;1,300&display=swap" />
+
+  <style>
+    /* ============================================
+       VARIÁVEIS DE CORES
+       ============================================ */
+    :root {
+      --background: #000000;
+      --foreground: #ffffff;
+      --primary: #8052ff;          /* roxo */
+      --spark: #ffb829;            /* amarelo */
+      --verdant: #15846e;          /* verde */
+      --mist: #bdbdbd;             /* cinza claro */
+      --muted: #6b6b6b;            /* cinza escuro */
+      --border: rgba(255, 255, 255, 0.12);
+      --radius: 1rem;
+    }
+
+    /* ============================================
+       BASE
+       ============================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-color: var(--border);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: "Archivo", system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ::selection {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Títulos grandes */
+    .display {
+      font-family: "Archivo", system-ui, sans-serif;
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 0.92;
+    }
+
+    /* Texto com gradiente animado */
+    .text-gradient {
+      background: linear-gradient(90deg, var(--primary), var(--spark), var(--verdant), var(--primary));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shift 6s linear infinite;
+    }
+
+    @keyframes shift {
+      to { background-position: 300% 0; }
+    }
+
+    /* ============================================
+       CURSOR PERSONALIZADO (só no desktop)
+       ============================================ */
+    .cursor-ring {
+      pointer-events: none;
+      position: fixed;
+      z-index: 50;
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--primary);
+      mix-blend-mode: difference;
+      transition: transform 0.15s ease-out;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .cursor-ring { display: block; }
+    }
+
+    /* ============================================
+       NAVEGAÇÃO (logo centralizada)
+       ============================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      backdrop-filter: blur(4px);
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+    }
+
+    nav .logo span {
+      color: var(--primary);
+    }
+
+    /* ============================================
+       HERO (topo com partículas)
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      overflow: hidden;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .hero { padding: 0 48px; }
+    }
+
+    .hero .particles-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero .particles-bg canvas {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .hero .content {
+      position: relative;
+      z-index: 10;
+      max-width: 64rem;
+      padding-top: 96px;
+    }
+
+    .hero .location {
+      margin-bottom: 24px;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--spark);
+    }
+
+    .hero h1 {
+      font-size: 14vw;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 { font-size: 8.5rem; }
+    }
+
+    .hero .bio {
+      margin-top: 32px;
+      max-width: 28rem;
+      font-size: 1.125rem;
+      font-weight: 200;
+      color: var(--mist);
+    }
+
+    .hero .actions {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      border-radius: 9999px;
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 32px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 60px -10px var(--primary);
+    }
+
+    .btn-link {
+      padding: 16px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .btn-link:hover {
+      color: var(--spark);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    /* ============================================
+       ANIMAÇÃO DAS PALAVRAS DO TÍTULO
+       ============================================ */
+    .word-mask {
+      display: inline-block;
+      overflow: hidden;
+      padding-bottom: 8px;
+      vertical-align: bottom;
+    }
+
+    .word-rise {
+      display: inline-block;
+      animation: rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    @keyframes rise {
+      from { transform: translateY(110%) rotate(6deg); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+
+    /* ============================================
+       FAIXAS DE TEXTO DESLIZANTES (MARQUEE)
+       ============================================ */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 0;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+
+    .marquee-track.reverse {
+      animation-direction: reverse;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .marquee-big {
+      font-size: 3.75rem;
+    }
+
+    .marquee-small {
+      margin-top: 16px;
+      font-size: 2.25rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    @media (min-width: 768px) {
+      .marquee-big { font-size: 6rem; }
+      .marquee-small { font-size: 3rem; }
+    }
+
+    .marquee-group {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: 40px;
+      padding-right: 40px;
+    }
+
+    .marquee-group .item {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .star {
+      color: var(--primary);
+      display: inline-block;
+      animation: spin 14s linear infinite;
+    }
+
+    .dot {
+      color: var(--spark);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ============================================
+       SERVIÇOS
+       ============================================ */
+    .services {
+      padding: 128px 24px;
+    }
+
+    @media (min-width: 768px) {
+      .services { padding: 128px 48px; }
+    }
+
+    .services h2 {
+      margin-bottom: 80px;
+      font-size: 3.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .services h2 { font-size: 6rem; }
+    }
+
+    .services h2 span {
+      color: var(--primary);
+    }
+
+    .services-grid {
+      display: grid;
+      gap: 1px;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--border);
+    }
+
+    @media (min-width: 768px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--background);
+      padding: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .service-card { padding: 56px; }
+    }
+
+    /* Brilho colorido que aparece ao passar o mouse */
+    .service-card .glow {
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      height: 240px;
+      width: 240px;
+      border-radius: 50%;
+      opacity: 0;
+      filter: blur(48px);
+      transition: all 0.7s;
+    }
+
+    .service-card:hover .glow {
+      opacity: 0.4;
+      transform: scale(1.5);
+    }
+
+    .glow.purple { background: var(--primary); }
+    .glow.yellow { background: var(--spark); }
+    .glow.green { background: var(--verdant); }
+    .glow.white { background: var(--foreground); }
+
+    .service-card .number {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .service-card h3 {
+      margin-top: 24px;
+      font-size: 2.25rem;
+      transition: transform 0.5s;
+    }
+
+    @media (min-width: 768px) {
+      .service-card h3 { font-size: 3rem; }
+    }
+
+    .service-card:hover h3 {
+      transform: translateX(12px);
+    }
+
+    .service-card p {
+      margin-top: 16px;
+      max-width: 24rem;
+      font-weight: 200;
+      color: var(--mist);
+    }
+
+    .service-card .arrow {
+      margin-top: 32px;
+      display: inline-block;
+      font-size: 1.5rem;
+      transition: transform 0.5s, color 0.5s;
+    }
+
+    .service-card:hover .arrow {
+      transform: rotate(45deg);
+      color: var(--spark);
+    }
+
+    /* ============================================
+       SOBRE
+       ============================================ */
+    .about {
+      position: relative;
+      display: grid;
+      align-items: center;
+      gap: 64px;
+      padding: 128px 24px;
+    }
+
+    @media (min-width: 768px) {
+      .about {
+        grid-template-columns: 1fr 1fr;
+        padding: 128px 48px;
+      }
+    }
+
+    .about-visual {
+      position: relative;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      max-width: 28rem;
+    }
+
+    .about-visual .blur-circle {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--primary);
+      filter: blur(48px);
+      opacity: 0.3;
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    .about-visual .ring {
+      position: absolute;
+      border: 1px solid var(--primary);
+      border-radius: 40%;
+      animation: spin 14s linear infinite;
+    }
+
+    .about-visual .ring.outer { inset: 32px; }
+    .about-visual .ring.inner {
+      inset: 64px;
+      border-color: var(--spark);
+      border-radius: 35%;
+      animation-direction: reverse;
+      animation-duration: 9s;
+    }
+
+    .about-visual .letter {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10rem;
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-18px) rotate(4deg); }
+    }
+
+    .about-text h2 {
+      font-size: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .about-text h2 { font-size: 4.5rem; }
+    }
+
+    .about-text h2 span {
+      color: var(--spark);
+    }
+
+    .about-text p {
+      margin-top: 32px;
+      font-size: 1.125rem;
+      font-weight: 200;
+      color: var(--mist);
+    }
+
+    .about-stats {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .about-stats .stat-value {
+      font-size: 3rem;
+      color: var(--primary);
+    }
+
+    .about-stats .stat-label {
+      margin-top: 8px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    /* ============================================
+       CONTATO
+       ============================================ */
+    .contact {
+      position: relative;
+      overflow: hidden;
+      padding: 160px 24px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .contact { padding: 160px 48px; }
+    }
+
+    .contact .bg-glow {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 600px;
+      width: 600px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.2;
+      filter: blur(120px);
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    .contact h2 {
+      position: relative;
+      font-size: 13vw;
+    }
+
+    @media (min-width: 768px) {
+      .contact h2 { font-size: 9rem; }
+    }
+
+    .contact p {
+      position: relative;
+      margin: 24px auto 0;
+      max-width: 28rem;
+      font-weight: 200;
+      color: var(--mist);
+    }
+
+    .contact .buttons {
+      position: relative;
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .contact .buttons { flex-direction: row; }
+    }
+
+    .contact .btn-primary {
+      padding: 20px 40px;
+      font-size: 1.125rem;
+    }
+
+    .contact .btn-primary:hover {
+      transform: scale(1.1);
+    }
+
+    .btn-outline {
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      padding: 20px 40px;
+      font-size: 1.125rem;
+      transition: transform 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline:hover {
+      transform: scale(1.1);
+      border-color: var(--spark);
+      color: var(--spark);
+    }
+
+    /* ============================================
+       RODAPÉ
+       ============================================ */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    @media (min-width: 768px) {
+      footer { padding: 32px 48px; }
+    }
+
+    /* ============================================
+       REVELAÇÃO AO ROLAR A PÁGINA
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      filter: blur(8px);
+      transition: opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+                  transform 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+                  filter 1s;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Cursor personalizado -->
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Navegação: logo centralizada -->
+  <nav>
+    <a href="#" class="logo display">W<span>s</span></a>
+  </nav>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+      <div class="particles-bg" id="particlesBg">
+        <canvas id="particlesCanvas"></canvas>
+      </div>
+
+      <div class="content">
+        <p class="location word-rise">FLORIANÓPOLIS - SC</p>
+
+        <h1 class="display">
+          <span class="word-mask"><span class="word-rise" style="animation-delay: 0s">Criativo</span></span>
+          <br />
+          <span class="word-mask"><span class="word-rise text-gradient" style="animation-delay: 0.25s">e</span></span>
+          <span class="word-mask"><span class="word-rise text-gradient" style="animation-delay: 0.34s">movem.</span></span>
+        </h1>
+
+        <p class="bio word-rise" style="animation-delay: 0.7s">
+          Sou o Willian - designer, em ramos diversos entre
+          Motion designer, edição e criador de sites.
+        </p>
+
+        <div class="actions word-rise" style="animation-delay: 0.9s">
+          <a href="https://wa.me/5548991276955" target="_blank" rel="noreferrer" class="btn-primary">Começar projeto</a>
+          <a href="https://instagram.com/wils.llv" target="_blank" rel="noreferrer" class="btn-link">@wils.llv →</a>
+        </div>
+      </div>
+
+      <div class="scroll-hint">scroll</div>
+    </section>
+
+    <!-- ========== FAIXAS DESLIZANTES ========== -->
+    <section class="marquee-section">
+      <div class="marquee-track marquee-big display" id="marqueeBig">
+        <div class="marquee-group">
+          <span class="item">Design <span class="star">✦</span></span>
+          <span class="item">Motion <span class="star">✦</span></span>
+          <span class="item">Vídeo <span class="star">✦</span></span>
+          <span class="item">Sites <span class="star">✦</span></span>
+        </div>
+        <div class="marquee-group">
+          <span class="item">Design <span class="star">✦</span></span>
+          <span class="item">Motion <span class="star">✦</span></span>
+          <span class="item">Vídeo <span class="star">✦</span></span>
+          <span class="item">Sites <span class="star">✦</span></span>
+        </div>
+      </div>
+
+      <div class="marquee-track reverse marquee-small display">
+        <div class="marquee-group">
+          <span>Branding <span class="dot">•</span></span>
+          <span>Reels <span class="dot">•</span></span>
+          <span>Animação 2D <span class="dot">•</span></span>
+          <span>3D <span class="dot">•</span></span>
+          <span>Vinhetas <span class="dot">•</span></span>
+          <span>Landing pages <span class="dot">•</span></span>
+          <span>Social media <span class="dot">•</span></span>
+        </div>
+        <div class="marquee-group">
+          <span>Branding <span class="dot">•</span></span>
+          <span>Reels <span class="dot">•</span></span>
+          <span>Animação 2D <span class="dot">•</span></span>
+          <span>3D <span class="dot">•</span></span>
+          <span>Vinhetas <span class="dot">•</span></span>
+          <span>Landing pages <span class="dot">•</span></span>
+          <span>Social media <span class="dot">•</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SERVIÇOS ========== -->
+    <section class="services" id="servicos">
+      <h2 class="reveal display">O que eu <span>faço</span></h2>
+
+      <div class="services-grid">
+        <div class="service-card reveal" style="transition-delay: 0s">
+          <div class="glow purple"></div>
+          <span class="number">01</span>
+          <h3 class="display">Design Gráfico</h3>
+          <p>Identidades visuais, posts, cartazes e peças que fazem parar o scroll.</p>
+          <span class="arrow">↗</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.1s">
+          <div class="glow yellow"></div>
+          <span class="number">02</span>
+          <h3 class="display">Motion Design</h3>
+          <p>Logos animados, vinhetas e animações 2D/3D com ritmo e personalidade.</p>
+          <span class="arrow">↗</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.2s">
+          <div class="glow green"></div>
+          <span class="number">03</span>
+          <h3 class="display">Edição de Vídeo</h3>
+          <p>Reels, YouTube e comerciais com cortes dinâmicos, cor e som afiados.</p>
+          <span class="arrow">↗</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.3s">
+          <div class="glow white"></div>
+          <span class="number">04</span>
+          <h3 class="display">Criação de Sites</h3>
+          <p>Sites modernos, rápidos e cheios de movimento para sua marca.</p>
+          <span class="arrow">↗</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SOBRE ========== -->
+    <section class="about" id="sobre">
+      <div class="about-visual">
+        <div class="blur-circle"></div>
+        <div class="ring outer"></div>
+        <div class="ring inner"></div>
+        <div class="letter display text-gradient">W</div>
+      </div>
+
+      <div class="about-text">
+        <h2 class="reveal display">Criativo do<br /><span>frame</span> ao pixel.</h2>
+        <p class="reveal">
+          Transforme suas ideias em peças visuais que contam histórias. Do design estático à animação,
+          da edição ao site no ar — tudo com movimento, ritmo e identidade única para seu Negócio.
+        </p>
+
+        <div class="about-stats reveal">
+          <div>
+            <div class="stat-value display">∞</div>
+            <div class="stat-label">ideias por minuto</div>
+          </div>
+          <div></div>
+          <div>
+            <div class="stat-value display">24h</div>
+            <div class="stat-label">pra responder</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTATO ========== -->
+    <section class="contact" id="contato">
+      <div class="bg-glow"></div>
+      <h2 class="reveal display">Bora <span class="text-gradient">criar?</span></h2>
+      <p class="reveal">Me chama no WhatsApp ou no Instagram e vamos tirar seu projeto do papel.</p>
+
+      <div class="buttons reveal">
+        <a href="https://wa.me/5548991276955" target="_blank" rel="noreferrer" class="btn-primary">
+          WhatsApp · (48) 99127-6955
+        </a>
+        <a href="https://instagram.com/wils.llv" target="_blank" rel="noreferrer" class="btn-outline">
+          Instagram · @wils.llv
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== RODAPÉ ========== -->
+    <footer>
+      <span>© 2026 Wils</span>
+      <span>Design · Motion · Vídeo · Sites</span>
+    </footer>
+  </main>
+
+  <script>
+    /* ============================================
+       PARTÍCULAS ANIMADAS DO TOPO
+       ============================================ */
+    (function () {
+      var canvas = document.getElementById("particlesCanvas");
+      var ctx = canvas.getContext("2d");
+      var colors = ["#8052ff", "#ffb829", "#15846e", "#ffffff", "#bdbdbd"];
+      var w = 0, h = 0;
+      var mouse = { x: -999, y: -999 };
+      var dpr = window.devicePixelRatio || 1;
+
+      function resize() {
+        w = canvas.width = canvas.offsetWidth * dpr;
+        h = canvas.height = canvas.offsetHeight * dpr;
+      }
+      resize();
+
+      // Cria as partículas (triângulos coloridos)
+      var N = 420;
+      var pts = [];
+      for (var i = 0; i < N; i++) {
+        pts.push({
+          t: Math.random() * Math.PI * 2,
+          r: Math.sqrt(Math.random()),
+          s: Math.random() * 4 + 2,
+          c: colors[(Math.random() * colors.length) | 0],
+          rot: Math.random() * 6,
+          sp: (Math.random() - 0.5) * 0.004,
+          x: 0,
+          y: 0
+        });
+      }
+
+      function loop(time) {
+        ctx.clearRect(0, 0, w, h);
+        var cx = w * 0.62, cy = h * 0.5;
+        var R = Math.min(w, h) * 0.38;
+
+        for (var i = 0; i < pts.length; i++) {
+          var p = pts[i];
+          p.t += p.sp;
+          p.rot += 0.02;
+
+          var wob = Math.sin(time / 900 + p.t * 3) * 0.08;
+          var x = cx + Math.cos(p.t) * R * (p.r + wob) * 1.25;
+          var y = cy + Math.sin(p.t) * R * (p.r + wob) * 0.85;
+
+          // As partículas fogem do mouse
+          var dx = x - mouse.x, dy = y - mouse.y;
+          var d = Math.hypot(dx, dy);
+          if (d < 160 * dpr) {
+            var f = (160 * dpr - d) / d;
+            x += dx * f * 0.4;
+            y += dy * f * 0.4;
+          }
+
+          p.x += (x - p.x) * 0.08;
+          p.y += (y - p.y) * 0.08;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.c;
+          ctx.beginPath();
+          var s = p.s * dpr;
+          ctx.moveTo(0, -s);
+          ctx.lineTo(s, s);
+          ctx.lineTo(-s, s);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      window.addEventListener("resize", resize);
+      window.addEventListener("mousemove", function (e) {
+        var b = canvas.getBoundingClientRect();
+        mouse.x = (e.clientX - b.left) * dpr;
+        mouse.y = (e.clientY - b.top) * dpr;
+      });
+    })();
+
+    /* ============================================
+       REVELAÇÃO DOS ELEMENTOS AO ROLAR
+       ============================================ */
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) entry.target.classList.add("in");
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll(".reveal").forEach(function (el) {
+        io.observe(el);
+      });
+    })();
+
+    /* ============================================
+       CURSOR PERSONALIZADO
+       ============================================ */
+    (function () {
+      var ring = document.getElementById("cursorRing");
+      window.addEventListener("mousemove", function (e) {
+        ring.style.transform = "translate(" + (e.clientX - 16) + "px, " + (e.clientY - 16) + "px)";
+      });
+    })();
+
+    /* ============================================
+       PARALLAX: partículas e faixa grande
+       acompanham a rolagem
+       ============================================ */
+    (function () {
+      var bg = document.getElementById("particlesBg");
+      var marquee = document.getElementById("marqueeBig");
+      window.addEventListener("scroll", function () {
+        var s = window.scrollY;
+        bg.style.transform = "translateY(" + s * 0.3 + "px)";
+        marquee.style.transform = "translateX(" + -s * 0.2 + "px)";
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
